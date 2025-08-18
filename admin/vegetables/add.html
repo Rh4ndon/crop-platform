@@ -154,15 +154,14 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="growthPeriod" class="form-label">Growth Period (days)</label>
-                                            <input type="number" class="form-control" id="growthPeriod" required>
+                                            <input type="text" class="form-control" id="growthPeriod" placeholder="e.g. 60-90" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="season" class="form-label">Preferred Season</label>
                                             <select class="form-select" id="season" required>
                                                 <option value="">Select season</option>
-                                                <option value="summer">Summer</option>
-                                                <option value="winter">Winter</option>
-                                                <option value="rainy">Rainy</option>
+                                                <option value="dry">Dry</option>
+                                                <option value="wet">Wet</option>
                                                 <option value="all">All Seasons</option>
                                             </select>
                                         </div>
@@ -180,6 +179,14 @@
                                     <div class="mb-3">
                                         <label for="calendar" class="form-label">Crop Calendar</label>
                                         <textarea class="form-control" id="calendar" rows="3" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="soil_properties" class="form-label">Soil Properties</label>
+                                        <textarea class="form-control" id="soil_properties" rows="2" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="weather_season" class="form-label">Weather Season</label>
+                                        <textarea class="form-control" id="weather_season" rows="2" required></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="topography" class="form-label">Field Topography</label>
