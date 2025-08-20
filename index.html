@@ -54,18 +54,18 @@
                             <h2 class="fw-bold" style="color: var(--dark-green);">Vegetable Production Platform</h2>
                             <p class="text-muted">Access your account</p>
                         </div>
-                        <form>
+                        <form method="POST" action="controllers/login.php">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                                <input type="password" class="form-control"  id="password" name="password" placeholder="Enter your password" required>
                             </div>
 
-                            <a href="admin/dashboard.html" class="btn btn-login w-100 py-2">Admin Login</a>
-                            <a href="farmer/dashboard.html" class="btn btn-login w-100 py-2 mt-3">Farmer Login</a>
+                            <button type="submit" name="login" class="btn btn-login w-100 py-2">Login</button>
+
                         </form>
                        
                     </div>
@@ -74,6 +74,74 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check sessionStorage for user data
+        if (sessionStorage.getItem('id') && sessionStorage.getItem('role') && sessionStorage.getItem('is_logged_in')) {
+            // Redirect to dashboard based on role
+            const role = sessionStorage.getItem('role');
+            if (role === 'admin') {
+                window.location.href = 'view/admin/dashboard.html';
+            } else if (role === 'farmer') {
+                window.location.href = 'view/farmer/dashboard.html';
+            }
+        }
+        // Show alert
+        function showAlert(message, type = 'success') {
+            // Remove existing alert if any
+            let existingAlert = document.querySelector('.floating-alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Create the alert element
+            let alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show floating-alert`;
+            alertDiv.setAttribute('role', 'alert');
+            alertDiv.innerHTML = `
+                <strong>${type === 'success' ? 'Success!' : type === 'warning' ? 'Warning!' : 'Error!'}</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+
+            // Apply floating styles
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '1050';
+
+            // Append to body
+            document.body.appendChild(alertDiv);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 5000);
+        }
+
+        //show alert on successful logout or index.php?msg=You have been logged out successfully
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('msg')) {
+            let message = urlParams.get('msg');
+            let type = 'success';
+            showAlert(message, type);
+        }
+        if (urlParams.has('error')) {
+            let message = urlParams.get('error');
+            let type = 'danger';
+            showAlert(message, type);
+        }
+        if (urlParams.has('warning')) {
+            let message = urlParams.get('warning');
+            let type = 'warning';
+            showAlert(message, type);
+        }
+
+        
+        if (window.location.search) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+            
+    </script>
   
 </body>
 </html>
