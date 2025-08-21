@@ -1,10 +1,12 @@
- // Show alert if session storage has a id, role, or is_logged_in
-        if (!sessionStorage.getItem('id') || !sessionStorage.getItem('role') || !sessionStorage.getItem('is_logged_in')) {
-            window.location.href = '../../controllers/logout.php';
-        }
+// Check if user is logged in by verifying all required session items exist
+const role = sessionStorage.getItem('role');
+const isLoggedIn = sessionStorage.getItem('is_logged_in');
 
-        const role = sessionStorage.getItem('role');
-        if (role && role !== 'farmer') {
-            // If the user is not an farmer, redirect to the farmer dashboard
-            window.location.href = '../../view/admin/dashboard.html';
-        }
+if (!isLoggedIn) {
+    window.location.href = '../../index.html?warning=You must be logged in to access this page.';
+}
+
+if (role && role !== 'farmer') {
+    // If the user is not a farmer, redirect to the admin dashboard
+    window.location.href = '../../view/admin/dashboard.html';
+}

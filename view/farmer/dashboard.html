@@ -69,6 +69,56 @@
         .bg-light-green {
             background-color: rgba(124, 179, 66, 0.1);
         }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .stat-card {
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .error-message {
+            color: #dc3545;
+            font-style: italic;
+        }
+        .crop-card {
+            transition: transform 0.2s;
+            border-left: 4px solid var(--green);
+        }
+        .crop-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .tip-card {
+            background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(255, 213, 79, 0.1));
+            border-left: 4px solid var(--orange);
+        }
+        .category-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .season-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .season-all { background-color: var(--green); }
+        .season-dry { background-color: var(--orange); }
+        .season-wet { background-color: #2196F3; }
     </style>
 </head>
 <body>
@@ -121,49 +171,64 @@
             <div class="col-md-10 ms-sm-auto px-0">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light-green">
                     <div class="container-fluid">
-                        <span class="navbar-brand">Farmer Dashboard</span>
+                        <span class="navbar-brand fw-bold" style="color: var(--dark-green);">Farmer Dashboard</span>
                         <div class="d-flex align-items-center">
-                            <span class="me-3">Welcome, Farmer</span>
-                            <img src="https://via.placeholder.com/40" class="rounded-circle" alt="Profile">
+                            <span class="me-3" id="welcome-farmer">Welcome, Farmer</span>
+                            <script>
+                                const firstName = sessionStorage.getItem('first_name');
+                                const lastName = sessionStorage.getItem('last_name');
+                                if (firstName && lastName) {
+                                    document.getElementById('welcome-farmer').textContent = `Welcome, ${firstName} ${lastName}`;
+                                }
+                            </script>
+                            <img src="https://thumbs.dreamstime.com/b/illustration-profile-icon-avatar-young-farmer-male-237709823.jpg" style="max-width: 50px;" class="rounded-circle" alt="Profile">
                         </div>
                     </div>
                 </nav>
                 
                 <div class="container-fluid py-4">
+                    <!-- Statistics Cards -->
                     <div class="row mb-4">
                         <div class="col-md-4">
-                            <div class="card shadow-sm border-0">
+                            <div class="card shadow-sm border-0 stat-card">
                                 <div class="card-body text-center">
                                     <i class="bi bi-tree card-icon"></i>
                                     <h5 class="mt-2">Available Vegetables</h5>
-                                    <h3 class="fw-bold">24</h3>
+                                    <h3 class="fw-bold" style="color: var(--green);" id="vegetables-count">
+                                        <span class="loading-spinner"></span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card shadow-sm border-0">
+                            <div class="card shadow-sm border-0 stat-card">
                                 <div class="card-body text-center">
                                     <i class="bi bi-journal-text card-icon"></i>
                                     <h5 class="mt-2">Growth Guides</h5>
-                                    <h3 class="fw-bold">48</h3>
+                                    <h3 class="fw-bold" style="color: var(--green);" id="growth-guides-count">
+                                        <span class="loading-spinner"></span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card shadow-sm border-0">
+                            <div class="card shadow-sm border-0 stat-card">
                                 <div class="card-body text-center">
                                     <i class="bi bi-shield-plus card-icon"></i>
                                     <h5 class="mt-2">Treatment Methods</h5>
-                                    <h3 class="fw-bold">36</h3>
+                                    <h3 class="fw-bold" style="color: var(--green);" id="treatment-methods-count">
+                                        <span class="loading-spinner"></span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="row">
+                        <!-- Recently Added Vegetables -->
                         <div class="col-md-8">
                             <div class="card shadow-sm border-0">
-                                <div class="card-header bg-gradient-primary text-white">
+                                <div class="card-header card-header-gradient">
                                     <h5 class="mb-0">Recently Added Vegetables</h5>
                                 </div>
                                 <div class="card-body">
@@ -177,24 +242,11 @@
                                                     <th>Season</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="recent-vegetables-table">
                                                 <tr>
-                                                    <td>Tomato</td>
-                                                    <td>Fruit Vegetable</td>
-                                                    <td>60-90 days</td>
-                                                    <td>All Seasons</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Potato</td>
-                                                    <td>Root Vegetable</td>
-                                                    <td>90-120 days</td>
-                                                    <td>Dry</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Cabbage</td>
-                                                    <td>Leafy Vegetable</td>
-                                                    <td>70-100 days</td>
-                                                    <td>Dry</td>
+                                                    <td colspan="4" class="text-center">
+                                                        <span class="loading-spinner"></span> Loading vegetables...
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -202,21 +254,54 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Quick Access & Tips -->
                         <div class="col-md-4">
                             <div class="card shadow-sm border-0">
-                                <div class="card-header bg-gradient-primary text-white">
+                                <div class="card-header card-header-gradient">
                                     <h5 class="mb-0">Quick Access</h5>
                                 </div>
                                 <div class="card-body">
+                                    <a href="update-details.html" class="btn btn-warning w-100 mb-3">
+                                        <i class="bi bi-person-lines-fill me-2"></i> Account Management
+                                    </a>
                                     <a href="vegetables.html" class="btn btn-primary w-100 mb-3">
                                         <i class="bi bi-search me-2"></i> Browse Vegetables
                                     </a>
-                                    <a href="#" class="btn btn-success w-100 mb-3">
-                                        <i class="bi bi-book me-2"></i> View Guides
-                                    </a>
-                                    <a href="#" class="btn btn-warning w-100 mb-3">
-                                        <i class="bi bi-question-circle me-2"></i> Get Help
-                                    </a>
+                                    <button class="btn btn-success w-100 mb-3" onclick="showSeasonalRecommendations()">
+                                        <i class="bi bi-calendar-week me-2"></i> Seasonal Guide
+                                    </button>
+                                    <button class="btn btn-warning w-100 mb-3" onclick="showFarmingTips()">
+                                        <i class="bi bi-lightbulb me-2"></i> Farming Tips
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Tips Card -->
+                            <div class="card shadow-sm border-0 mt-4">
+                                <div class="card-header card-header-gradient">
+                                    <h5 class="mb-0">Today's Tip</h5>
+                                </div>
+                                <div class="card-body" id="daily-tip">
+                                    <div class="text-center">
+                                        <span class="loading-spinner"></span> Loading tip...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Seasonal Recommendations Row -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header card-header-gradient">
+                                    <h5 class="mb-0">Seasonal Recommendations</h5>
+                                </div>
+                                <div class="card-body" id="seasonal-recommendations">
+                                    <div class="text-center">
+                                        <span class="loading-spinner"></span> Loading recommendations...
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -225,8 +310,283 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for Tips -->
+    <div class="modal fade" id="tipsModal" tabindex="-1" aria-labelledby="tipsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--gradient-primary); color: white;">
+                    <h5 class="modal-title" id="tipsModalLabel">Farming Tips</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="tips-content">
+                    <div class="text-center">
+                        <span class="loading-spinner"></span> Loading tips...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Seasonal Recommendations -->
+    <div class="modal fade" id="seasonalModal" tabindex="-1" aria-labelledby="seasonalModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--gradient-primary); color: white;">
+                    <h5 class="modal-title" id="seasonalModalLabel">Seasonal Planting Guide</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="seasonal-content">
+                    <div class="text-center">
+                        <span class="loading-spinner"></span> Loading seasonal guide...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/alert.js"></script>
     <script src="../assets/farmer-auth.js"></script>
+    
+    <script>
+        let dashboardData = null;
+
+        // Dashboard data loading
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFarmerDashboardData();
+        });
+
+        async function loadFarmerDashboardData() {
+            try {
+                const response = await fetch('../../controllers/farmer/dashboard-api.php');
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                dashboardData = data;
+                
+                // Update statistics
+                document.getElementById('vegetables-count').textContent = data.vegetables_count;
+                document.getElementById('growth-guides-count').textContent = data.growth_guides_count;
+                document.getElementById('treatment-methods-count').textContent = data.treatment_methods_count;
+                
+                // Update recent vegetables table
+                updateRecentVegetablesTable(data.recent_vegetables);
+                
+                // Update seasonal recommendations
+                updateSeasonalRecommendations(data.seasonal_recommendations);
+                
+                // Show daily tip
+                showDailyTip(data.farming_tips);
+                
+            } catch (error) {
+                console.error('Error loading farmer dashboard data:', error);
+                
+                // Show error message in statistics
+                const errorMsg = '<span class="error-message">Error</span>';
+                document.getElementById('vegetables-count').innerHTML = errorMsg;
+                document.getElementById('growth-guides-count').innerHTML = errorMsg;
+                document.getElementById('treatment-methods-count').innerHTML = errorMsg;
+                
+                // Show error in table
+                document.getElementById('recent-vegetables-table').innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center error-message">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Error loading vegetables: ${error.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function updateRecentVegetablesTable(vegetables) {
+            const tableBody = document.getElementById('recent-vegetables-table');
+            
+            if (vegetables.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            <i class="bi bi-info-circle me-2"></i>
+                            No vegetables available yet
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let tableHTML = '';
+            vegetables.slice(0, 5).forEach(vegetable => {
+                const seasonClass = `season-${vegetable.preferred_season}`;
+                const categoryBadge = getCategoryBadge(vegetable.category);
+                
+                tableHTML += `
+                    <tr class="crop-card">
+                        <td>
+                            <strong>${vegetable.crop_name}</strong>
+                        </td>
+                        <td>
+                            <span class="badge ${categoryBadge} category-badge">${vegetable.category}</span>
+                        </td>
+                        <td>${vegetable.growth_period} days</td>
+                        <td>
+                            <span class="season-indicator ${seasonClass}"></span>
+                            ${capitalizeFirst(vegetable.preferred_season)}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = tableHTML;
+        }
+
+        function updateSeasonalRecommendations(recommendations) {
+            const container = document.getElementById('seasonal-recommendations');
+            
+            if (recommendations.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="bi bi-info-circle me-2"></i>
+                        No seasonal recommendations available
+                    </div>
+                `;
+                return;
+            }
+            
+            let recommendationsHTML = '<div class="row">';
+            recommendations.slice(0, 4).forEach((crop, index) => {
+                const categoryBadge = getCategoryBadge(crop.category);
+                recommendationsHTML += `
+                    <div class="col-md-6 mb-3">
+                        <div class="card crop-card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="bi bi-star-fill text-warning me-1"></i>
+                                    ${crop.name}
+                                </h6>
+                                <p class="card-text small">
+                                    <span class="badge ${categoryBadge} category-badge me-2">${crop.category}</span>
+                                    <span class="text-muted">${crop.growth_period} days</span>
+                                </p>
+                                <p class="card-text small text-success">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    ${crop.reason}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            recommendationsHTML += '</div>';
+            
+            container.innerHTML = recommendationsHTML;
+        }
+
+        function showDailyTip(tips) {
+            const container = document.getElementById('daily-tip');
+            
+            if (tips && tips.length > 0) {
+                const randomTip = tips[Math.floor(Math.random() * tips.length)];
+                container.innerHTML = `
+                    <div class="tip-card p-3 rounded">
+                        <h6 class="text-success">
+                            <i class="${randomTip.icon} me-2"></i>
+                            ${randomTip.title}
+                        </h6>
+                        <p class="mb-0 small">${randomTip.tip}</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="bi bi-info-circle me-2"></i>
+                        No tips available
+                    </div>
+                `;
+            }
+        }
+
+        function showFarmingTips() {
+            if (!dashboardData || !dashboardData.farming_tips) {
+                return;
+            }
+            
+            let tipsHTML = '<div class="row">';
+            dashboardData.farming_tips.forEach((tip, index) => {
+                tipsHTML += `
+                    <div class="col-md-6 mb-3">
+                        <div class="card tip-card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="${tip.icon} text-success me-2"></i>
+                                    ${tip.title}
+                                </h6>
+                                <p class="card-text">${tip.tip}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            tipsHTML += '</div>';
+            
+            document.getElementById('tips-content').innerHTML = tipsHTML;
+            new bootstrap.Modal(document.getElementById('tipsModal')).show();
+        }
+
+        function showSeasonalRecommendations() {
+            if (!dashboardData || !dashboardData.seasonal_recommendations) {
+                return;
+            }
+            
+            let seasonalHTML = '<div class="row">';
+            dashboardData.seasonal_recommendations.forEach((crop, index) => {
+                const categoryBadge = getCategoryBadge(crop.category);
+                seasonalHTML += `
+                    <div class="col-md-6 mb-3">
+                        <div class="card crop-card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="bi bi-calendar-check text-primary me-1"></i>
+                                    ${crop.name}
+                                </h6>
+                                <p class="card-text">
+                                    <span class="badge ${categoryBadge} category-badge me-2">${crop.category}</span>
+                                    <span class="text-muted">${crop.growth_period} days</span>
+                                </p>
+                                <p class="card-text small text-success">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    ${crop.reason}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            seasonalHTML += '</div>';
+            
+            document.getElementById('seasonal-content').innerHTML = seasonalHTML;
+            new bootstrap.Modal(document.getElementById('seasonalModal')).show();
+        }
+
+        function getCategoryBadge(category) {
+            const badges = {
+                'leafy': 'bg-success',
+                'fruit': 'bg-danger',
+                'root': 'bg-warning text-dark',
+                'stem': 'bg-info'
+            };
+            return badges[category] || 'bg-secondary';
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        // Refresh dashboard data every 10 minutes
+        setInterval(loadFarmerDashboardData, 10 * 60 * 1000);
+    </script>
 </body>
 </html>

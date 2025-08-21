@@ -69,6 +69,33 @@
         .bg-light-green {
             background-color: rgba(124, 179, 66, 0.1);
         }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .stat-card {
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .activity-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .error-message {
+            color: #dc3545;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -144,38 +171,46 @@
                 <div class="container-fluid py-4">
                     <div class="row mb-4">
                         <div class="col-md-3">
-                            <div class="card shadow-sm border-0 card-accent">
+                            <div class="card shadow-sm border-0 card-accent stat-card">
                                 <div class="card-body text-center">
                                     <i class="bi bi-tree card-icon"></i>
-                                    <h5 class="mt-2">Vegetables</h5>
-                                    <h3 class="fw-bold" style="color: var(--green);">24</h3>
+                                    <h5 class="mt-2">Crops</h5>
+                                    <h3 class="fw-bold" style="color: var(--green);" id="crops-count">
+                                        <span class="loading-spinner"></span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card shadow-sm border-0">
+                            <div class="card shadow-sm border-0 stat-card">
                                 <div class="card-body text-center">
                                     <i class="bi bi-people card-icon"></i>
                                     <h5 class="mt-2">Farmers</h5>
-                                    <h3 class="fw-bold" style="color: var(--green);">156</h3>
+                                    <h3 class="fw-bold" style="color: var(--green);" id="farmers-count">
+                                        <span class="loading-spinner"></span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card shadow-sm border-0">
+                            <div class="card shadow-sm border-0 stat-card">
                                 <div class="card-body text-center">
                                     <i class="bi bi-clipboard-data card-icon"></i>
                                     <h5 class="mt-2">Data Entries</h5>
-                                    <h3 class="fw-bold" style="color: var(--green);">482</h3>
+                                    <h3 class="fw-bold" style="color: var(--green);" id="data-entries-count">
+                                        <span class="loading-spinner"></span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card shadow-sm border-0">
+                            <div class="card shadow-sm border-0 stat-card">
                                 <div class="card-body text-center">
                                     <i class="bi bi-calendar-check card-icon"></i>
                                     <h5 class="mt-2">Activities</h5>
-                                    <h3 class="fw-bold" style="color: var(--green);">12</h3>
+                                    <h3 class="fw-bold" style="color: var(--green);" id="activities-count">
+                                        <span class="loading-spinner"></span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
@@ -195,23 +230,14 @@
                                                     <th>Date</th>
                                                     <th>Activity</th>
                                                     <th>User</th>
+                                                    <th>Type</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="activities-table">
                                                 <tr>
-                                                    <td>2023-07-15</td>
-                                                    <td>Added Tomato information</td>
-                                                    <td>Admin</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2023-07-14</td>
-                                                    <td>Updated Potato treatment</td>
-                                                    <td>Admin</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2023-07-13</td>
-                                                    <td>Registered new farmer</td>
-                                                    <td>Admin</td>
+                                                    <td colspan="4" class="text-center">
+                                                        <span class="loading-spinner"></span> Loading activities...
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -236,14 +262,165 @@
                                     </a>
                                 </div>
                             </div>
+                            
+                            <!-- Recent Crops Summary -->
+                            <div class="card shadow-sm border-0 mt-4">
+                                <div class="card-header card-header-gradient">
+                                    <h5 class="mb-0">Recent Crops</h5>
+                                </div>
+                                <div class="card-body" id="recent-crops-summary">
+                                    <div class="text-center">
+                                        <span class="loading-spinner"></span> Loading...
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/alert.js"></script>
     <script src="../assets/auth.js"></script>
+    
+    <script>
+        // Dashboard data loading
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+        });
+
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('../../controllers/admin/dashboard-api.php');
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Update statistics
+                document.getElementById('crops-count').textContent = data.crops_count;
+                document.getElementById('farmers-count').textContent = data.farmers_count;
+                document.getElementById('data-entries-count').textContent = data.data_entries_count;
+                document.getElementById('activities-count').textContent = data.activities_count;
+                
+                // Update recent activities table
+                updateActivitiesTable(data.recent_activities);
+                
+                // Update recent crops summary
+                updateRecentCropsSummary(data.recent_crops);
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                
+                // Show error message in statistics
+                const errorMsg = '<span class="error-message">Error loading</span>';
+                document.getElementById('crops-count').innerHTML = errorMsg;
+                document.getElementById('farmers-count').innerHTML = errorMsg;
+                document.getElementById('data-entries-count').innerHTML = errorMsg;
+                document.getElementById('activities-count').innerHTML = errorMsg;
+                
+                // Show error in activities table
+                document.getElementById('activities-table').innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center error-message">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Error loading activities: ${error.message}
+                        </td>
+                    </tr>
+                `;
+                
+                // Show error in recent crops
+                document.getElementById('recent-crops-summary').innerHTML = `
+                    <div class="text-center error-message">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Error loading data
+                    </div>
+                `;
+            }
+        }
+
+        function updateActivitiesTable(activities) {
+            const tableBody = document.getElementById('activities-table');
+            
+            if (activities.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            <i class="bi bi-info-circle me-2"></i>
+                            No recent activities found
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let tableHTML = '';
+            activities.forEach(activity => {
+                const badgeClass = activity.type === 'crop' ? 'bg-success' : 'bg-info';
+                const badgeText = activity.type === 'crop' ? 'Crop' : 'Farmer';
+                
+                tableHTML += `
+                    <tr>
+                        <td>${activity.date}</td>
+                        <td>${activity.activity}</td>
+                        <td>${activity.user}</td>
+                        <td>
+                            <span class="badge ${badgeClass} activity-badge">${badgeText}</span>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = tableHTML;
+        }
+
+        function updateRecentCropsSummary(crops) {
+            const container = document.getElementById('recent-crops-summary');
+            
+            if (crops.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="bi bi-info-circle me-2"></i>
+                        No crops added yet
+                    </div>
+                `;
+                return;
+            }
+            
+            let summaryHTML = '';
+            crops.slice(0, 3).forEach((crop, index) => {
+                const date = new Date(crop.created_at).toLocaleDateString();
+                summaryHTML += `
+                    <div class="d-flex align-items-center mb-2 ${index < crops.length - 1 ? 'border-bottom pb-2' : ''}">
+                        <i class="bi bi-tree text-success me-2"></i>
+                        <div class="flex-grow-1">
+                            <div class="fw-bold">${crop.crop_name}</div>
+                            <small class="text-muted">${date}</small>
+                        </div>
+                        <span class="badge bg-secondary">${crop.category}</span>
+                    </div>
+                `;
+            });
+            
+            if (crops.length > 3) {
+                summaryHTML += `
+                    <div class="text-center mt-2">
+                        <small class="text-muted">
+                            <i class="bi bi-plus me-1"></i>
+                            ${crops.length - 3} more crops
+                        </small>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = summaryHTML;
+        }
+
+        // Refresh dashboard data every 5 minutes
+        setInterval(loadDashboardData, 5 * 60 * 1000);
+    </script>
 </body>
 </html>

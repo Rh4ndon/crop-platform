@@ -139,18 +139,19 @@
                 <div class="container-fluid py-4">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
-                            <form>
+                            <form id="edit-crop-form" enctype="multipart/form-data">
                                 <!-- Vegetable Description Section -->
                                 <div class="form-section">
-                                    <h5 class="section-title">Vegetable Description</h5>
+                                    <h5 class="section-title">Crop Description</h5>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <label for="vegetableName" class="form-label">Vegetable Name</label>
-                                            <input type="text" class="form-control" id="vegetableName" required>
+                                            <label for="crop_name" class="form-label">Crop Name</label>
+                                            <input type="text" name="crop_name" class="form-control" id="crop_name" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="category" class="form-label">Category</label>
-                                            <select class="form-select" id="category" required>
+                                            <select class="form-select" name="category" id="category" required>
+                                                <option value="Grains">Grains</option>
                                                 <option value="">Select category</option>
                                                 <option value="leafy">Leafy Vegetable</option>
                                                 <option value="fruit">Fruit Vegetable</option>
@@ -160,12 +161,14 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="image" class="form-label">Vegetable Image</label>
-                                        <input class="form-control" type="file" id="image">
+                                        <label for="image" class="form-label">Crop Image</label>
+                                        <input class="form-control" name="image" type="file" id="image">
+                                        <label for="image" class="form-label">Current Image</label><br>
+                                        <img src="" id="current-image-preview" alt="" style="max-width: 500px;">
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Description</label>
-                                        <textarea class="form-control" id="description" rows="3" required></textarea>
+                                        <textarea class="form-control" name="description" id="description" rows="3" required></textarea>
                                     </div>
                                 </div>
                                 
@@ -175,11 +178,11 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="growthPeriod" class="form-label">Growth Period (days)</label>
-                                            <input type="number" class="form-control" id="growthPeriod" required>
+                                            <input type="text" name="growth_period" class="form-control" id="growthPeriod" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="season" class="form-label">Preferred Season</label>
-                                            <select class="form-select" id="season" required>
+                                            <select class="form-select" name="preferred_season" id="season" required>
                                                 <option value="">Select season</option>
                                                 <option value="dry">Dry</option>
                                                 <option value="wet">Wet</option>
@@ -190,29 +193,29 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="soilType" class="form-label">Soil Type</label>
-                                            <input type="text" class="form-control" id="soilType" required>
+                                            <input type="text" name="soil_type" class="form-control" id="soilType" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="soilPh" class="form-label">Soil pH Range</label>
-                                            <input type="text" class="form-control" id="soilPh" placeholder="e.g. 5.5-6.5" required>
+                                            <input type="text" name="soil_ph" class="form-control" id="soilPh" placeholder="e.g. 5.5-6.5" required>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="calendar" class="form-label">Crop Calendar</label>
-                                        <textarea class="form-control" id="calendar" rows="3" required></textarea>
+                                        <textarea class="form-control" name="crop_calendar" id="calendar" rows="3" required></textarea>
                                     </div>
                                     <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="soil_properties" class="form-label">Soil Properties</label>
-                                        <textarea class="form-control" id="soil_properties" rows="2" required></textarea>
+                                        <textarea class="form-control" name="soil_properties" id="soil_properties" rows="2" required></textarea>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="weather_season" class="form-label">Weather Season</label>
-                                        <textarea class="form-control" id="weather_season" rows="2" required></textarea>
+                                        <textarea class="form-control" name="weather_season" id="weather_season" rows="2" required></textarea>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="topography" class="form-label">Field Topography</label>
-                                        <textarea class="form-control" id="topography" rows="2" required></textarea>
+                                        <textarea class="form-control" name="field_topography" id="topography" rows="2" required></textarea>
                                     </div>
                                     </div>
                                     
@@ -223,23 +226,23 @@
                                     <h5 class="section-title">Treatment Details</h5>
                                     <div class="mb-3">
                                         <label for="pests" class="form-label">Common Pests and Diseases</label>
-                                        <textarea class="form-control" id="pests" rows="3" required></textarea>
+                                        <textarea class="form-control" name="common_pests_diseases" id="pests" rows="3" required></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="pesticides" class="form-label">Recommended Pesticides</label>
-                                        <textarea class="form-control" id="pesticides" rows="3" required></textarea>
+                                        <textarea class="form-control" name="recommended_pesticides" id="pesticides" rows="3" required></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="sprayMethod" class="form-label">Spray Method</label>
-                                        <textarea class="form-control" id="sprayMethod" rows="2" required></textarea>
+                                        <textarea class="form-control" name="spray_method" id="sprayMethod" rows="2" required></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="fertilizers" class="form-label">Recommended Fertilizers</label>
-                                        <textarea class="form-control" id="fertilizers" rows="3" required></textarea>
+                                        <textarea class="form-control" name="recommended_fertilizers" id="fertilizers" rows="3" required></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="application" class="form-label">Fertilizer Application Method</label>
-                                        <textarea class="form-control" id="application" rows="2" required></textarea>
+                                        <textarea class="form-control" name="fertilizer_application" id="application" rows="2" required></textarea>
                                     </div>
                                 </div>
                                 
@@ -248,6 +251,136 @@
                                     <button type="submit" class="btn btn-primary">Save Vegetable</button>
                                 </div>
                             </form>
+
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    // Get crop ID from session storage
+                                    const cropId = sessionStorage.getItem('edit_crop_id');
+                                    if (!cropId) {
+                                        showAlert('No crop ID found in session storage.', 'danger');
+                                        return;
+                                    }
+
+                                    console.log('Loading crop ID:', cropId);
+
+                                    // Fetch crop details
+                                    fetch(`../../../controllers/admin/get-crop-details.php?id=${cropId}`)
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Network response was not ok');
+                                            }
+                                            return response.json();
+                                        })
+                                        .then(data => {
+                                            console.log('Received data:', data);
+                                            
+                                            let crop;
+                                            if (Array.isArray(data) && data.length > 0) {
+                                                crop = data[0]; // Get first item if array
+                                            } else if (data.crop) {
+                                                crop = data.crop; // If wrapped in crop object
+                                            } else {
+                                                crop = data; // If direct object
+                                            }
+
+                                            if (!crop) {
+                                                throw new Error('No crop data received');
+                                            }
+
+                                            // Make cropId available globally for submit
+                                            window.cropId = crop.id || crop.crop_id;
+
+                                            // Map backend fields to form fields
+                                            document.getElementById('crop_name').value = crop.crop_name || '';
+                                            document.getElementById('category').value = crop.category || '';
+                                            document.getElementById('description').value = crop.description || '';
+                                            document.getElementById('growthPeriod').value = crop.growth_period || '';
+                                            document.getElementById('season').value = crop.preferred_season || '';
+                                            document.getElementById('soilType').value = crop.soil_type || '';
+                                            document.getElementById('soilPh').value = crop.soil_ph || '';
+                                            document.getElementById('calendar').value = crop.crop_calendar || '';
+                                            document.getElementById('soil_properties').value = crop.soil_properties || '';
+                                            document.getElementById('weather_season').value = crop.weather_season || '';
+                                            document.getElementById('topography').value = crop.field_topography || '';
+                                            document.getElementById('pests').value = crop.common_pests_diseases || '';
+                                            document.getElementById('pesticides').value = crop.recommended_pesticides || '';
+                                            document.getElementById('sprayMethod').value = crop.spray_method || '';
+                                            document.getElementById('fertilizers').value = crop.recommended_fertilizers || '';
+                                            document.getElementById('application').value = crop.fertilizer_application || '';
+
+                                            // Optionally show current image if available
+                                            if (crop.image_path) {
+                                                let imgPreview = document.getElementById('current-image-preview');
+                                                if (!imgPreview) {
+                                                    imgPreview = document.createElement('img');
+                                                    imgPreview.id = 'current-image-preview';
+                                                    imgPreview.style.maxWidth = '60px';
+                                                    imgPreview.className = 'mt-2 d-block';
+                                                    document.getElementById('image').parentNode.appendChild(imgPreview);
+                                                }
+                                                imgPreview.src = '../../../uploads/crops/' + crop.image_path;
+                                                imgPreview.alt = 'Current Vegetable Image';
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error fetching crop details:', error);
+                                            showAlert('Error fetching crop details: ' + error.message, 'danger');
+                                        });
+                                });
+
+                                document.getElementById('edit-crop-form').addEventListener('submit', function(event) {
+                                    event.preventDefault();
+
+                                    const cropId = window.cropId;
+                                    if (!cropId) {
+                                        showAlert('No crop ID available for update.', 'danger');
+                                        return;
+                                    }
+
+                                    const form = event.target;
+                                    const formData = new FormData(form);
+                                    
+                                    // Add crop ID to form data
+                                    formData.append('id', cropId);
+
+                                    const submitBtn = form.querySelector('button[type="submit"]');
+                                    const originalBtnText = submitBtn.innerHTML;
+
+                                    submitBtn.disabled = true;
+                                    submitBtn.innerHTML = '<i class="bi bi-arrow-repeat me-1"></i> Processing...';
+                                    
+                                    fetch(`../../../controllers/admin/update-crop.php`, {
+                                        method: 'POST',
+                                        body: formData
+                                    })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        console.log('Update response:', data);
+                                        if (data.success) {
+                                            showAlert('Crop updated successfully!', 'success');
+                                        } else {
+                                            showAlert('Error updating crop: ' + (data.error || 'Unknown error'), 'danger');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        showAlert('An error occurred while updating the crop.', 'danger');
+                                    })
+                                    .finally(() => {
+                                        submitBtn.disabled = false;
+                                        submitBtn.innerHTML = originalBtnText;
+                                    });
+                                });
+                                </script>
+
+
+
                         </div>
                     </div>
                 </div>

@@ -139,19 +139,20 @@
                 <div class="container-fluid py-4">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
-                            <form action="add_crop.php" method="POST" enctype="multipart/form-data">
+                            <form id="add-crop-form" enctype="multipart/form-data">
                                 <!-- Vegetable Description Section -->
                                 <div class="form-section">
                                     <h5 class="section-title">Crop Description</h5>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <label for="vegetable_name" class="form-label">Crop Name</label>
-                                            <input type="text" class="form-control" id="vegetable_name" name="vegetable_name" required>
+                                            <label for="crop_name" class="form-label">Crop Name</label>
+                                            <input type="text" class="form-control" id="crop_name" name="crop_name" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="category" class="form-label">Category</label>
                                             <select class="form-select" id="category" name="category" required>
                                                 <option value="">Select category</option>
+                                                <option value="Grains">Grains</option>
                                                 <option value="leafy">Leafy Vegetable</option>
                                                 <option value="fruit">Fruit Vegetable</option>
                                                 <option value="root">Root Vegetable</option>
@@ -243,10 +244,48 @@
                                 </div>
                                 
                                 <div class="d-flex justify-content-end mt-4">
-                                    <button type="button" class="btn btn-secondary me-3">Cancel</button>
+                                    
                                     <button type="submit" class="btn btn-primary">Save Vegetable</button>
                                 </div>
                             </form>
+
+
+                            <script>
+                                document.getElementById('add-crop-form').addEventListener('submit', function(event) {
+                                   
+                                    event.preventDefault(); // Prevent default form submission
+                                    const form = event.target;
+                                    const formData = new FormData(form);
+                                    const submitBtn = form.querySelector('button[type="submit"]');
+                                    const originalBtnText = submitBtn.innerHTML;
+
+                                    submitBtn.disabled = true; // Disable the button to prevent multiple submissions
+                                    submitBtn.innerHTML = '<i class="bi bi-arrow-repeat me-1"></i> Processing...';
+                                    fetch('../../../controllers/admin/add-crop.php', {
+                                        method: 'POST',
+                                        body: formData
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                           showAlert('Crop added successfully!', 'success');
+                                            // Optionally, redirect or reset the form
+                                            form.reset();
+                                        } else {
+                                            showAlert('Error adding crop: ' + data.error, 'danger');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        showAlert('An error occurred while adding the crop.', 'danger');
+                                    });
+                                });
+
+                            </script>
+
+
+
+
                         </div>
                     </div>
                 </div>
