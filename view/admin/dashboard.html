@@ -6,6 +6,7 @@
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/sidebar.css">
     <style>
         :root {
           --light-green: #7CB342;
@@ -96,6 +97,23 @@
             color: #dc3545;
             font-style: italic;
         }
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .page-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .pagination .page-link {
+            color: var(--green);
+        }
+        .pagination .page-item.active .page-link {
+            background-color: var(--green);
+            border-color: var(--green);
+        }
     </style>
 </head>
 <body>
@@ -104,7 +122,7 @@
             <!-- Sidebar -->
             <div class="col-md-2 sidebar p-0">
                 <div class="text-center py-4">
-                    <img src="../../logo.png" alt="Logo" height="50">
+                    <img src="../assets/logo.png" alt="Logo" height="50">
                 </div>
                 <ul class="nav flex-column px-3">
                     <li class="nav-item">
@@ -119,7 +137,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="farmers/list.html">
-                            <i class="bi bi-people me-2"></i> Farmers
+                            <i class="bi bi-people me-2"></i> Students
                         </a>
                     </li>
                     <li class="nav-item mt-4">
@@ -127,25 +145,6 @@
                             <i class="bi bi-box-arrow-left me-2"></i> Logout
                         </a>
                     </li>
-
-                    <!-- Logout Confirmation Modal -->
-                    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to logout?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <a href="../../controllers/logout.php" class="btn btn-danger">Logout</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                 </ul>
             </div>
             
@@ -185,7 +184,7 @@
                             <div class="card shadow-sm border-0 stat-card">
                                 <div class="card-body text-center">
                                     <i class="bi bi-people card-icon"></i>
-                                    <h5 class="mt-2">Farmers</h5>
+                                    <h5 class="mt-2">Students</h5>
                                     <h3 class="fw-bold" style="color: var(--green);" id="farmers-count">
                                         <span class="loading-spinner"></span>
                                     </h3>
@@ -255,7 +254,7 @@
                                         <i class="bi bi-plus-circle me-2"></i> Add New Vegetable
                                     </a>
                                     <a href="farmers/add.html" class="btn btn-success w-100 mb-3" style="background: var(--gradient-accent); border: none;">
-                                        <i class="bi bi-person-plus me-2"></i> Register Farmer
+                                        <i class="bi bi-person-plus me-2"></i> Register Student
                                     </a>
                                     <a href="add-admin.html" class="btn btn-warning w-100 mb-3">
                                         <i class="bi bi-person-lines-fill me-2"></i> Admin Management
@@ -276,20 +275,94 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Recent Login Logs Section -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header card-header-gradient d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Login Logs</h5>
+                                    <button class="btn btn-sm btn-light" onclick="loadRecentLogs()">
+                                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                               
+                                                    <th>Login Time</th>
+                                                    <th>User Name</th>
+                                                    <th>Email</th>
+                                               
+                                                </tr>
+                                            </thead>
+                                            <tbody id="logs-table">
+                                                <tr>
+                                                    <td colspan="5" class="text-center">
+                                                        <span class="loading-spinner"></span> Loading logs...
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Pagination Controls -->
+                                    <div class="pagination-container">
+                                        <div class="page-info" id="page-info">
+                                            Showing 0-0 of 0 entries
+                                        </div>
+                                        <nav>
+                                            <ul class="pagination pagination-sm mb-0" id="pagination-controls">
+                                                <!-- Pagination buttons will be inserted here by JavaScript -->
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to logout?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a href="../../controllers/logout.php" class="btn btn-danger">Logout</a>
+          </div>
+        </div>
+      </div>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/alert.js"></script>
     <script src="../assets/auth.js"></script>
+    <script src="../assets/sidebar.js"></script>
     
     <script>
         // Dashboard data loading
         document.addEventListener('DOMContentLoaded', function() {
             loadDashboardData();
+            loadRecentLogs();
         });
+
+        // Pagination variables
+        let currentPage = 1;
+        const logsPerPage = 10;
+        let allLogs = [];
 
         async function loadDashboardData() {
             try {
@@ -419,8 +492,168 @@
             container.innerHTML = summaryHTML;
         }
 
+        // Load recent login logs
+        async function loadRecentLogs() {
+            try {
+                const response = await fetch('../../controllers/admin/get-logs.php');
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Store all logs and display the first page
+                allLogs = data.recentLogins || [];
+                currentPage = 1;
+                updateLogsTable();
+                setupPagination();
+                
+            } catch (error) {
+                console.error('Error loading logs:', error);
+                
+                document.getElementById('logs-table').innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center error-message">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Error loading logs: ${error.message}
+                        </td>
+                    </tr>
+                `;
+                
+                // Clear pagination info
+                document.getElementById('page-info').textContent = 'Showing 0-0 of 0 entries';
+                document.getElementById('pagination-controls').innerHTML = '';
+            }
+        }
+
+        function updateLogsTable() {
+            const tableBody = document.getElementById('logs-table');
+            
+            if (!allLogs || allLogs.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            <i class="bi bi-info-circle me-2"></i>
+                            No login logs found
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Calculate the logs to show for the current page
+            const startIndex = (currentPage - 1) * logsPerPage;
+            const endIndex = Math.min(startIndex + logsPerPage, allLogs.length);
+            const logsToShow = allLogs.slice(startIndex, endIndex);
+            
+            let tableHTML = '';
+            logsToShow.forEach((log, index) => {
+                // Format the date
+                const loginDate = new Date(log.login_time);
+                const formattedDate = loginDate.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // Calculate the actual index in the full dataset
+                const logIndex = startIndex + index + 1;
+                
+                // Highlight admin logins
+                const rowClass = log.email.includes('Admin@') ? 'table-warning' : '';
+                
+                tableHTML += `
+                    <tr class="${rowClass}">
+                       
+                        <td>
+                            <i class="bi bi-calendar-event me-1"></i>
+                            ${formattedDate}
+                        </td>
+                        <td>
+                            <strong>${log.first_name} ${log.last_name}</strong>
+                            ${log.email.includes('Admin@') ? '<span class="badge bg-warning text-dark ms-2">Admin</span>' : ''}
+                        </td>
+                        <td>
+                            <small class="text-muted">${log.email}</small>
+                        </td>
+                   
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = tableHTML;
+            
+            // Update page info
+            document.getElementById('page-info').textContent = 
+                `Showing ${startIndex + 1}-${endIndex} of ${allLogs.length} entries`;
+        }
+
+        function setupPagination() {
+            const paginationContainer = document.getElementById('pagination-controls');
+            const totalPages = Math.ceil(allLogs.length / logsPerPage);
+            
+            // Clear existing pagination
+            paginationContainer.innerHTML = '';
+            
+            // Don't show pagination if there's only one page
+            if (totalPages <= 1) {
+                return;
+            }
+            
+            // Previous button
+            const prevButton = document.createElement('li');
+            prevButton.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevButton.innerHTML = `
+                <a class="page-link" href="#" aria-label="Previous" onclick="changePage(${currentPage - 1})">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            `;
+            paginationContainer.appendChild(prevButton);
+            
+            // Page number buttons
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('li');
+                pageButton.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                pageButton.innerHTML = `
+                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                `;
+                paginationContainer.appendChild(pageButton);
+            }
+            
+            // Next button
+            const nextButton = document.createElement('li');
+            nextButton.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextButton.innerHTML = `
+                <a class="page-link" href="#" aria-label="Next" onclick="changePage(${currentPage + 1})">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            `;
+            paginationContainer.appendChild(nextButton);
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(allLogs.length / logsPerPage);
+            
+            // Validate page number
+            if (page < 1 || page > totalPages) {
+                return;
+            }
+            
+            currentPage = page;
+            updateLogsTable();
+            setupPagination();
+            
+            // Scroll to the logs section for better UX
+            document.getElementById('logs-table').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // Refresh dashboard data every 5 minutes
         setInterval(loadDashboardData, 5 * 60 * 1000);
+        
+        // Refresh logs every 2 minutes
+        setInterval(loadRecentLogs, 2 * 60 * 1000);
     </script>
 </body>
 </html>

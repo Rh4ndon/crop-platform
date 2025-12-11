@@ -28,6 +28,8 @@ if ($crops && count($crops) > 0) {
             'crop_calendar' => $crop['crop_calendar'],
             'soil_properties' => $crop['soil_properties'],
             'weather_season' => $crop['weather_season'],
+            'average_yields' => $crop['average_yields'],
+            'harvesting_methods' => $crop['harvesting_methods'],
             'field_topography' => $crop['field_topography'],
             'common_pests_diseases' => $crop['common_pests_diseases'],
             'recommended_pesticides' => $crop['recommended_pesticides'],

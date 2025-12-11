@@ -21,7 +21,7 @@ if ($admins && count($admins) > 0) {
             'last_name' => $admin['last_name'],
             'email' => $admin['email'],
             'phone' => $admin['phone'],
-            'address' => $admin['address'],
+
             'gender' => $admin['gender'],
             'created_at' => $admin['created_at'],
             'updated_at' => $admin['updated_at']

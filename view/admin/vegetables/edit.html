@@ -6,6 +6,7 @@
     <title>Add New Vegetable</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../assets/sidebar.css">
     <style>
         :root {
           --light-green: #7CB342;
@@ -77,7 +78,7 @@
             <!-- Sidebar -->
             <div class="col-md-2 sidebar p-0">
                 <div class="text-center py-4">
-                    <img src="../../logo.png" alt="Logo" height="50">
+                    <img src="../../assets/logo.png" alt="Logo" height="50">
                 </div>
                 <ul class="nav flex-column px-3">
                     <li class="nav-item">
@@ -90,30 +91,18 @@
                             <i class="bi bi-tree me-2"></i> Crops
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../farmers/list.html">
+                            <i class="bi bi-people me-2"></i> Students
+                        </a>
+                    </li>
                     <li class="nav-item mt-4">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
                             <i class="bi bi-box-arrow-left me-2"></i> Logout
                         </a>
                     </li>
 
-                    <!-- Logout Confirmation Modal -->
-                    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to logout?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <a href="../../../controllers/logout.php" class="btn btn-danger">Logout</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    
                 </ul>
             </div>
             
@@ -151,8 +140,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label for="category" class="form-label">Category</label>
                                             <select class="form-select" name="category" id="category" required>
-                                                <option value="Grains">Grains</option>
                                                 <option value="">Select category</option>
+                                                <option value="grains">Grains</option>
                                                 <option value="leafy">Leafy Vegetable</option>
                                                 <option value="fruit">Fruit Vegetable</option>
                                                 <option value="root">Root Vegetable</option>
@@ -214,8 +203,12 @@
                                         <textarea class="form-control" name="weather_season" id="weather_season" rows="2" required></textarea>
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        <label for="topography" class="form-label">Field Topography</label>
-                                        <textarea class="form-control" name="field_topography" id="topography" rows="2" required></textarea>
+                                        <label for="average_yields" class="form-label">Average Yields</label>
+                                        <input type="text" class="form-control" id="average_yields" name="average_yields" placeholder="e.g. 8-10 tons per hectare per season" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="harvesting_methods" class="form-label">Harvesting Methods</label>
+                                        <textarea class="form-control" id="harvesting_methods" name="harvesting_methods" rows="3" required></textarea>
                                     </div>
                                     </div>
                                     
@@ -302,7 +295,8 @@
                                             document.getElementById('calendar').value = crop.crop_calendar || '';
                                             document.getElementById('soil_properties').value = crop.soil_properties || '';
                                             document.getElementById('weather_season').value = crop.weather_season || '';
-                                            document.getElementById('topography').value = crop.field_topography || '';
+                                            document.getElementById('average_yields').value = crop.average_yields || '';
+                                            document.getElementById('harvesting_methods').value = crop.harvesting_methods || '';
                                             document.getElementById('pests').value = crop.common_pests_diseases || '';
                                             document.getElementById('pesticides').value = crop.recommended_pesticides || '';
                                             document.getElementById('sprayMethod').value = crop.spray_method || '';
@@ -387,8 +381,28 @@
             </div>
         </div>
     </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Are you sure you want to logout?
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a href="../../../controllers/logout.php" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/alert.js"></script>
     <script src="../../assets/inside-auth.js"></script>
+    <script src="../../assets/sidebar.js"></script>
 </body>
 </html>

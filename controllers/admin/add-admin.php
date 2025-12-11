@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $last_name = filter_var(trim($_POST['last_name']), FILTER_SANITIZE_STRING);
         $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
         $phone = filter_var(trim($_POST['phone']), FILTER_SANITIZE_STRING);
-        $address = isset($_POST['address']) ? filter_var(trim($_POST['address']), FILTER_SANITIZE_STRING) : '';
+
         $gender = isset($_POST['gender']) ? filter_var(trim($_POST['gender']), FILTER_SANITIZE_STRING) : '';
 
         // Validate email format
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'last_name' => $last_name,
             'email' => $email,
             'phone' => $phone,
-            'address' => $address,
+
             'gender' => $gender,
             'role' => 'admin', // Set role to admin
             'password' => $password,

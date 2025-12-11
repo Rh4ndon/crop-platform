@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Vegetable</title>
+    <title>Add New Student</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../assets/sidebar.css">
     <style>
         :root {
           --light-green: #7CB342;
@@ -69,6 +70,17 @@
         .bg-light-green {
             background-color: rgba(124, 179, 66, 0.1);
         }
+        .section-header {
+            background-color: rgba(76, 175, 80, 0.1);
+            padding: 10px 15px;
+            margin: 20px -15px 15px -15px;
+            border-left: 4px solid var(--green);
+            font-weight: 600;
+            color: var(--dark-green);
+        }
+        .form-check-label {
+            margin-left: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -77,7 +89,7 @@
             <!-- Sidebar -->
             <div class="col-md-2 sidebar p-0">
                 <div class="text-center py-4">
-                    <img src="../../logo.png" alt="Logo" height="50">
+                    <img src="../../assets/logo.png" alt="Logo" height="50">
                 </div>
                 <ul class="nav flex-column px-3">
                     <li class="nav-item">
@@ -92,7 +104,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="../farmers/list.html">
-                            <i class="bi bi-people me-2"></i> Farmers
+                            <i class="bi bi-people me-2"></i> Students
                         </a>
                     </li>
                    <li class="nav-item mt-4">
@@ -100,25 +112,6 @@
                             <i class="bi bi-box-arrow-left me-2"></i> Logout
                         </a>
                     </li>
-
-                    <!-- Logout Confirmation Modal -->
-                    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to logout?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <a href="../../../controllers/logout.php" class="btn btn-danger">Logout</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                 </ul>
             </div>
             
@@ -126,7 +119,7 @@
             <div class="col-md-10 ms-sm-auto px-0">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light-green">
                     <div class="container-fluid">
-                        <span class="navbar-brand">Add New Farmer</span>
+                        <span class="navbar-brand">Student Registration Form</span>
                         <div class="d-flex align-items-center">
                             <span class="me-3" id="welcome-admin">Admin</span>
                             <script>
@@ -143,57 +136,388 @@
                 
                 <div class="container py-5">
                     <div class="row justify-content-center">
-                        <div class="col-lg-7 col-md-9">
+                        <div class="col-lg-10 col-md-11">
                             <div class="card shadow-sm border-0 card-accent">
                                 <div class="card-header card-header-gradient d-flex align-items-center">
                                     <i class="bi bi-person-plus-fill card-icon me-2"></i>
-                                    <span class="fs-5 fw-semibold">Add New Farmer</span>
+                                    <span class="fs-5 fw-semibold">Learners Profile Form - Student Registration</span>
                                 </div>
                                 <div class="card-body px-4 py-4">
                                     <form id="add-farmer-form" enctype="multipart/form-data">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="first_name" name="first_name" required placeholder="Enter first name">
+                                        <div id="farmer-alert" class="mt-4"></div>
+                                        <!-- Section 1: Basic Information -->
+                                        <div class="section-header">
+                                            <i class="bi bi-info-circle me-2"></i>1. Basic Information
+                                        </div>
+                                        <div class="row g-3 mb-3">   
+                                            <div class="col-md-12">
+                                                <label for="profile_picture" class="form-label">Profile Picture <span class="text-danger">*</span></label>
+                                                <input type="file" accept="image/*" class="form-control" id="profile_picture" name="profile_picture" required>
                                             </div>
-                                            <div class="col-md-6">
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
                                                 <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="last_name" name="last_name" required placeholder="Enter last name">
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" id="email" name="email" required placeholder="example@email.com">
+                                            <div class="col-md-4">
+                                                <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="first_name" name="first_name" required placeholder="Enter first name">
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                                                <input type="tel" class="form-control" id="phone" name="phone" required placeholder="e.g. 0712345678">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="gender" class="form-label">Gender</label>
-                                                <select class="form-select" id="gender" name="gender">
-                                                    <option value="">Select gender</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Other">Other</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="address" class="form-label">Address</label>
-                                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter address">
+                                            <div class="col-md-4">
+                                                <label for="middle_name" class="form-label">Middle Name</label>
+                                                <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Enter middle name">
                                             </div>
                                         </div>
-                                        <div id="farmer-alert" class="mt-3"></div>
+
+                                        <!-- Section 2: Complete Permanent Mailing Address -->
+                                        <div class="section-header">
+                                            <i class="bi bi-geo-alt me-2"></i>2. Complete Permanent Mailing Address
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label for="street" class="form-label">Number, Street</label>
+                                                <input type="text" class="form-control" id="street" name="street" placeholder="e.g., Purok Caney, Bahen Old, Campo Proper">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="barangay" class="form-label">Barangay <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="barangay" name="barangay" required placeholder="Enter barangay">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="district" class="form-label">District</label>
+                                                <input type="text" class="form-control" id="district" name="district" placeholder="Enter district">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="city" class="form-label">City/Municipality <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="city" name="city" required placeholder="e.g., CAM MADO">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="province" class="form-label">Province <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="province" name="province" required placeholder="e.g., ISABELA">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="region" class="form-label">Region</label>
+                                                <input type="text" class="form-control" id="region" name="region" placeholder="e.g., 2">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="email" class="form-label">Email Address/Facebook Account</label>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="example@email.com">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="phone" class="form-label">Contact No. <span class="text-danger">*</span></label>
+                                                <input type="tel" class="form-control" id="phone" name="phone" required placeholder="e.g., 0917-868-8269">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="nationality" class="form-label">Nationality</label>
+                                                <input type="text" class="form-control" id="nationality" name="nationality" placeholder="e.g., Filipino">
+                                            </div>
+                                        </div>
+
+                                        <!-- Section 3: Personal Information -->
+                                        <div class="section-header">
+                                            <i class="bi bi-person me-2"></i>3. Personal Information
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label">3.1 Sex <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
+                                                        <label class="form-check-label" for="male">Male</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
+                                                        <label class="form-check-label" for="female">Female</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">3.2 Civil Status</label>
+                                                <div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="civil_status" id="single" value="Single">
+                                                        <label class="form-check-label" for="single">Single</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="civil_status" id="married" value="Married">
+                                                        <label class="form-check-label" for="married">Married</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="civil_status" id="widower" value="Widower">
+                                                        <label class="form-check-label" for="widower">Widower</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="civil_status" id="separated" value="Separated">
+                                                        <label class="form-check-label" for="separated">Separated</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">3.3 Employment Status (before training)</label>
+                                                <div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="employment_status" id="employed" value="employed">
+                                                        <label class="form-check-label" for="employed">Employed</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="employment_status" id="unemployed" value="unemployed">
+                                                        <label class="form-check-label" for="unemployed">Unemployed</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="employment_status" id="self_employed" value="self-employed">
+                                                        <label class="form-check-label" for="self_employed">Self-employed</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Birthdate -->
+                                        <div class="row g-3 mt-2">
+                                            <div class="col-md-3">
+                                                <label for="birth_month" class="form-label">3.4 Month of Birth <span class="text-danger">*</span></label>
+                                                <select class="form-select" id="birth_month" name="birth_month" required>
+                                                    <option value="">Select month</option>
+                                                    <option value="January">January</option>
+                                                    <option value="February">February</option>
+                                                    <option value="March">March</option>
+                                                    <option value="April">April</option>
+                                                    <option value="May">May</option>
+                                                    <option value="June">June</option>
+                                                    <option value="July">July</option>
+                                                    <option value="August">August</option>
+                                                    <option value="September">September</option>
+                                                    <option value="October">October</option>
+                                                    <option value="November">November</option>
+                                                    <option value="December">December</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="birth_day" class="form-label">Day of Birth <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" id="birth_day" name="birth_day" min="1" max="31" required placeholder="e.g., 26">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="birth_year" class="form-label">Year of Birth <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" id="birth_year" name="birth_year" min="1900" max="2025" required placeholder="e.g., 1990">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="age" class="form-label">Age</label>
+                                                <input type="number" class="form-control" id="age" name="age" placeholder="Auto-calculated" readonly>
+                                            </div>
+                                        </div>
+
+                                        <!-- Birthplace -->
+                                        <div class="row g-3 mt-2">
+                                            <div class="col-md-4">
+                                                <label for="birthplace_city" class="form-label">3.4 Birthplace - City/Municipality</label>
+                                                <input type="text" class="form-control" id="birthplace_city" name="birthplace_city" placeholder="e.g., CAUDIT UBONG BAPRIRA">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="birthplace_province" class="form-label">Province</label>
+                                                <input type="text" class="form-control" id="birthplace_province" name="birthplace_province" placeholder="e.g., ILOCOS NORTE">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="birthplace_region" class="form-label">Region</label>
+                                                <input type="text" class="form-control" id="birthplace_region" name="birthplace_region" placeholder="Region">
+                                            </div>
+                                        </div>
+
+                                        <!-- Section 4: Educational Attainment -->
+                                        <div class="section-header">
+                                            <i class="bi bi-mortarboard me-2"></i>3.5 Educational Attainment (Before the Training)
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="education" id="no_grade" value="no_grade">
+                                                    <label class="form-check-label" for="no_grade">
+                                                        No Grade Completed/ Pre-School (Nursery/Kinder/Prep)
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="education" id="elementary" value="elementary">
+                                                    <label class="form-check-label" for="elementary">
+                                                        Elementary Level
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="education" id="elementary_grad" value="elementary_grad">
+                                                    <label class="form-check-label" for="elementary_grad">
+                                                        Elementary Graduate
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="education" id="hs_grad" value="hs_grad">
+                                                    <label class="form-check-label" for="hs_grad">
+                                                        High School Graduate
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="education" id="hs_level" value="hs_level">
+                                                    <label class="form-check-label" for="hs_level">
+                                                        High School Level
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="education" id="post_secondary" value="post_secondary">
+                                                    <label class="form-check-label" for="post_secondary">
+                                                        Post-Secondary Level/Graduate
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="education" id="college_level" value="college_level">
+                                                    <label class="form-check-label" for="college_level">
+                                                        College Level
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="education" id="college_grad" value="college_grad">
+                                                    <label class="form-check-label" for="college_grad">
+                                                        College Graduate or Higher
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Section 5: Classification -->
+                                        <div class="section-header">
+                                            <i class="bi bi-list-check me-2"></i>4. Learner/Trainee/Student (Clients) Classification
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="pwd" value="Persons with Disabilities">
+                                                    <label class="form-check-label" for="pwd">
+                                                        Persons with Disabilities (PWDs)
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="displaced" value="Displaced Worker">
+                                                    <label class="form-check-label" for="displaced">
+                                                        Displaced Worker (Local)
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="ofw" value="OFW">
+                                                    <label class="form-check-label" for="ofw">
+                                                        OFW
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="ofw_dependent" value="OFW Dependent">
+                                                    <label class="form-check-label" for="ofw_dependent">
+                                                        OFW Dependent
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="ofw_repatriate" value="OFW Repatriate">
+                                                    <label class="form-check-label" for="ofw_repatriate">
+                                                        OFW Repatriate
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="trafficking" value="Victims/Survivors of Human Trafficking">
+                                                    <label class="form-check-label" for="trafficking">
+                                                        Victims/Survivors of Human Trafficking
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="indigenous" value="Indigenous People">
+                                                    <label class="form-check-label" for="indigenous">
+                                                        Indigenous People & Cultural Communities
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="rebel" value="Rebel Returnees">
+                                                    <label class="form-check-label" for="rebel">
+                                                        Rebel Returnees
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="solo_parent" value="Solo Parent">
+                                                    <label class="form-check-label" for="solo_parent">
+                                                        Solo Parent
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="classification" id="others" value="Others">
+                                                    <label class="form-check-label" for="others">
+                                                        Others (pls. specify)
+                                                    </label>
+                                                </div>
+                                                <input type="text" class="form-control mt-2" id="classification_others" name="classification_others_text" placeholder="Specify if Others" disabled>
+                                            </div>
+                                        </div>
+
+                                        
                                         <div class="d-flex justify-content-end mt-4">
                                             <button type="submit" class="btn btn-primary px-4">
-                                                <i class="bi bi-plus-circle me-1"></i> Add Farmer
+                                                <i class="bi bi-plus-circle me-1"></i> Register Student
                                             </button>
                                         </div>
                                     </form>
                                     <script>
+                                        // Auto-calculate age
+                                        function calculateAge() {
+                                            const day = document.getElementById('birth_day').value;
+                                            const month = document.getElementById('birth_month').value;
+                                            const year = document.getElementById('birth_year').value;
+                                            
+                                            if (day && month && year) {
+                                                const monthIndex = new Date(Date.parse(month + " 1, 2000")).getMonth();
+                                                const birthDate = new Date(year, monthIndex, day);
+                                                const today = new Date();
+                                                let age = today.getFullYear() - birthDate.getFullYear();
+                                                const m = today.getMonth() - birthDate.getMonth();
+                                                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                                                    age--;
+                                                }
+                                                document.getElementById('age').value = age;
+                                            }
+                                        }
+
+                                        document.getElementById('birth_day').addEventListener('change', calculateAge);
+                                        document.getElementById('birth_month').addEventListener('change', calculateAge);
+                                        document.getElementById('birth_year').addEventListener('change', calculateAge);
+
+                                        // Handle "Others" classification
+                                        const classificationRadios = document.querySelectorAll('input[name="classification"]');
+                                        const classificationOthersInput = document.getElementById('classification_others');
+                                        
+                                        classificationRadios.forEach(radio => {
+                                            radio.addEventListener('change', function() {
+                                                if (this.id === 'others' && this.checked) {
+                                                    classificationOthersInput.disabled = false;
+                                                    classificationOthersInput.focus();
+                                                } else {
+                                                    classificationOthersInput.disabled = true;
+                                                    classificationOthersInput.value = '';
+                                                }
+                                            });
+                                        });
+
+                                        // Form submission
                                         document.getElementById('add-farmer-form').addEventListener('submit', function(e) {
                                             e.preventDefault();
                                             const form = e.target;
                                             const formData = new FormData(form);
+                                            
+                                            // Handle "Others" classification - replace value with custom text
+                                            const othersRadio = document.getElementById('others');
+                                            if (othersRadio.checked) {
+                                                const customText = classificationOthersInput.value.trim();
+                                                if (customText) {
+                                                    formData.set('classification', customText);
+                                                }
+                                            }
+                                            // Remove the extra text field from form data
+                                            formData.delete('classification_others_text');
+                                            
                                             const alertBox = document.getElementById('farmer-alert');
                                             const submitBtn = form.querySelector('button[type="submit"]');
                                             const originalBtnText = submitBtn.innerHTML;
@@ -203,7 +527,6 @@
                                             // Show loading state
                                             submitBtn.disabled = true;
                                             submitBtn.innerHTML = '<i class="bi bi-arrow-repeat me-1"></i> Processing...';
-                                            
                                             fetch('../../../controllers/admin/add-farmer.php', {
                                                 method: 'POST',
                                                 body: formData
@@ -216,10 +539,11 @@
                                             })
                                             .then(data => {
                                                 if (data.success) {
-                                                    alertBox.innerHTML = '<div class="alert alert-success">Farmer added successfully!</div>';
+                                                    alertBox.innerHTML = '<div class="alert alert-success">Student registered successfully!<br><strong>ULI:</strong> ' + data.uli + '</div>';
                                                     form.reset();
+                                                    window.scrollTo(0, 0);
                                                 } else {
-                                                    alertBox.innerHTML = '<div class="alert alert-danger">' + (data.error || 'Failed to add farmer.') + '</div>';
+                                                    alertBox.innerHTML = '<div class="alert alert-danger">' + (data.error || 'Failed to register student.') + '</div>';
                                                 }
                                             })
                                             .catch((error) => {
@@ -241,8 +565,27 @@
             </div>
         </div>
     </div>
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="../../../controllers/logout.php" class="btn btn-danger">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/alert.js"></script>
     <script src="../../assets/inside-auth.js"></script>
+    <script src="../../assets/sidebar.js"></script>
 </body>
 </html>

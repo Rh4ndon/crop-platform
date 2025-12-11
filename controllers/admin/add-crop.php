@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'crop_calendar',
             'soil_properties',
             'weather_season',
-            'field_topography',
+
             'common_pests_diseases',
             'recommended_pesticides',
             'spray_method',
@@ -59,7 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $crop_calendar = htmlspecialchars(trim($_POST['crop_calendar']));
         $soil_properties = htmlspecialchars(trim($_POST['soil_properties']));
         $weather_season = htmlspecialchars(trim($_POST['weather_season']));
-        $field_topography = htmlspecialchars(trim($_POST['field_topography']));
+        $average_yields = htmlspecialchars(trim($_POST['average_yields']));
+        $harvesting_methods = htmlspecialchars(trim($_POST['harvesting_methods']));
+        //$field_topography = htmlspecialchars(trim($_POST['field_topography']));
         $common_pests_diseases = htmlspecialchars(trim($_POST['common_pests_diseases']));
         $recommended_pesticides = htmlspecialchars(trim($_POST['recommended_pesticides']));
         $spray_method = htmlspecialchars(trim($_POST['spray_method']));
@@ -68,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Handle file upload
         $image = $_FILES['image'];
-        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
         if (!in_array($image['type'], $allowed_types)) {
             throw new Exception("Invalid image type. Only JPG, PNG, and GIF are allowed.");
@@ -104,7 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'crop_calendar' => $crop_calendar,
             'soil_properties' => $soil_properties,
             'weather_season' => $weather_season,
-            'field_topography' => $field_topography,
+            'average_yields' => $average_yields,
+            'harvesting_methods' => $harvesting_methods,
+            //'field_topography' => $field_topography,
             'common_pests_diseases' => $common_pests_diseases,
             'recommended_pesticides' => $recommended_pesticides,
             'spray_method' => $spray_method,
